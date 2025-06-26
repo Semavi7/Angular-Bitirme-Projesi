@@ -1,29 +1,36 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, signal } from '@angular/core';
 import Blank from '../../components/blank/blank';
-import { FlexiGridModule } from "flexi-grid"
+import { FlexiGridFilterDataModel, FlexiGridModule } from "flexi-grid"
+import { httpResource } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 export interface ProductModel{
   id?: string;
   name: string;
   imageUrl: string
   price: number;
-  stock: number
+  stock: number;
+  categoryId: string;
+  categoryName: string;
 }
 
 @Component({
-  imports: [Blank, FlexiGridModule],
+  imports: [Blank, FlexiGridModule, RouterLink],
   templateUrl: './products.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Products {
-  readonly data = signal<ProductModel[]>([
+  readonly result = httpResource<ProductModel[]>(() => "http://localhost:3000/products")
+  readonly data = computed(() => this.result.value() ?? [])
+  readonly loading = computed(() => this.result.isLoading())
+
+  readonly categoryfilter = signal<FlexiGridFilterDataModel[]>([
     {
-      imageUrl: 'https://ffo3gv1cf3ir.merlincdn.net//SiteAssets/pasaj/crop/cg/1698313241770/1698313246580/1698313246580_600x450.png?1749680495000',
-      name: 'Iphone 15 Pro',
-      price: 100000,
-      stock: 15
+      name: "Telefon",
+      value: "Telefon"
     }
   ])
 
 }
+

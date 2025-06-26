@@ -1,11 +1,15 @@
-<app-blank pageTitle="Ürünler" [breadcrumbs]="[{title: 'Ürünler', url: '/product', icon: 'deployed_code'}]" />
-<flexi-grid [data]="data()" [showCaption]="true" captionTitle="Ürün Listesi" [showExportExcelBtn]="true" language="tr">
+<app-blank pageTitle="Ürünler" [breadcrumbs]="[{title: 'Ürünler', url: '/products', icon: 'deployed_code'}]" />
+<flexi-grid [data]="data()" [loading]="loading()" (onRefresh)="result.reload()" exportExcelFileName="products" [showCaption]="true" captionTitle="Ürün Listesi" [showExportExcelBtn]="true" language="tr">
+    <ng-template flexiGridCaptionCommandTemplate>
+        <flexi-button routerLink="/products/create" btnIcon="add" btnColor="primary" title="Ürün Ekle" flexiTooltip/>
+    </ng-template>
     <flexi-grid-column field="imageUrl" [filterable]="false" title="Ürün Resmi" textAlign="center" width="70px">
         <ng-template flexiGridCellTemplate let-item>
             <img [src]="item.imageUrl" width="70" height="70" style="object-fit: contain;"/>
         </ng-template>
     </flexi-grid-column>
     <flexi-grid-column field="name" title="Ürün Adı"/>
+    <flexi-grid-column field="categoryName" title="KategoriAdı" filterType="select" [filterData]="categoryfilter()"/>
     <flexi-grid-column field="price" title="Birim Fiyatı" filterType="number" textAlign="right" format="c" symbol="₺"/>
     <flexi-grid-column field="stock" title="Stok Adedi" filterType="number" textAlign="right"/>
     <ng-template flexiGridColumnCommandTemplate let-item>

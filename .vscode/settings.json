@@ -1,0 +1,11 @@
+{
+    "editor.suggest.selectionMode": "always",
+    "javascript.suggest.completeFunctionCalls": true,
+    "typescript.suggest.completeFunctionCalls": true,
+    "C_Cpp.autocompleteAddParentheses": true,
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on"
+    },
+    "editor.acceptSuggestionOnEnter": "on"
+}
