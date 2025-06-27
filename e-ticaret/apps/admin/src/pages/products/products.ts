@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, inject, signal } from '@angular/core';
 import Blank from '../../components/blank/blank';
 import { FlexiGridFilterDataModel, FlexiGridModule } from "flexi-grid"
-import { httpResource } from '@angular/common/http';
+import { HttpClient, httpResource } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
+import { FlexiToastService } from 'flexi-toast';
 
-export interface ProductModel{
+export interface ProductModel {
   id?: string;
   name: string;
   imageUrl: string
@@ -14,6 +15,15 @@ export interface ProductModel{
   categoryName: string;
 }
 
+export const initialProduct: ProductModel = {
+  name: "",
+  imageUrl: "",
+  price: 0,
+  stock: 0,
+  categoryId: "123",
+  categoryName: "Telefon"
+}
+
 @Component({
   imports: [Blank, FlexiGridModule, RouterLink],
   templateUrl: './products.html',
@@ -21,7 +31,7 @@ export interface ProductModel{
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class Products {
-  readonly result = httpResource<ProductModel[]>(() => "http://localhost:3000/products")
+  readonly result = httpResource<ProductModel[]>(() => "api/products")
   readonly data = computed(() => this.result.value() ?? [])
   readonly loading = computed(() => this.result.isLoading())
 
@@ -31,6 +41,17 @@ export default class Products {
       value: "Telefon"
     }
   ])
+
+  readonly #toast = inject(FlexiToastService)
+  readonly #http = inject(HttpClient)
+
+  delete(id: string) {
+    this.#toast.showSwal("Ürün Silindi", "Ürünü silmek istiyor musunuz?", "Sil", () => {
+      this.#http.delete(`api/products/${id}`).subscribe(res => {
+        this.result.reload()
+      })
+    })
+  }
 
 }
 

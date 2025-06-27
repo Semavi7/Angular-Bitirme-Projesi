@@ -14,5 +14,10 @@ export const navigation: NavigationModel[] = [
         title: "Ürünler",
         url: "/products",
         icon: "deployed_code"
+    },
+    {
+        title: "Kategoriler",
+        url: "/categories",
+        icon: "category"
     }
 ]

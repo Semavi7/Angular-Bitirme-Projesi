@@ -1,23 +1,62 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, resource, signal, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Blank from 'apps/admin/src/components/blank/blank';
+import { FlexiToastService } from 'flexi-toast';
+import { NgxMaskDirective } from 'ngx-mask';
+import { lastValueFrom } from 'rxjs';
+import { initialProduct, ProductModel } from '../products';
 
 @Component({
-  imports: [Blank, FormsModule],
+  imports: [Blank, FormsModule, NgxMaskDirective],
   templateUrl: './create.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class ProductCreate {
+  readonly id = signal<string | undefined>(undefined)
+  readonly result = resource({
+    params: () => this.id(),
+    loader: async () => {
+      var res = await lastValueFrom(this.#http.get<ProductModel>(`api/products/${this.id()}`))
+      return res
+    }
+  })
+
+
+  readonly data = computed(() => this.result.value() ?? { ...initialProduct })
+
+  readonly cardTitle = computed(() => this.id() ? "Ürün Güncelle" : "Ürün Ekle")
+  readonly btnName = computed(() => this.id() ? "Güncelle" : "Kaydet")
+
   readonly #http = inject(HttpClient)
   readonly #router = inject(Router)
-    save(form:NgForm){
-      if(!form.valid) return;
+  readonly #toast = inject(FlexiToastService)
+  readonly #activate = inject(ActivatedRoute)
 
-      this.#http.post("http://localhost:3000/products", form.value).subscribe(() => {
+  constructor() {
+    this.#activate.params.subscribe(res => {
+      if (res["id"]) {
+        this.id.set(res["id"])
+      }
+    })
+  }
+
+  save(form: NgForm) {
+    if (!form.valid) return;
+
+    if (!this.id()) {
+      this.#http.post("api/products", this.data()).subscribe(() => {
         this.#router.navigateByUrl("/products")
+        this.#toast.showToast("Başarılı", "Eklendi", "success")
       })
-    }                    
+    }
+    else {
+      this.#http.put(`api/products/${this.id()}`, this.data()).subscribe(() => {
+        this.#router.navigateByUrl("/products")
+        this.#toast.showToast("Başarılı", "Güncellendi", "info")
+      })
+    }
+  }
 }                            
