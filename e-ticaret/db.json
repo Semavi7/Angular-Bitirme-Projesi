@@ -6,7 +6,7 @@
       "name": "Iphone 15 Pro 2",
       "price": 100000,
       "stock": 15,
-      "categoryId": "233",
+      "categoryId": "f453",
       "categoryName": "Telefon"
     }
   ],
@@ -23,5 +23,6 @@
       "id": "6d7a",
       "name": "Akıllı Saat"
     }
-  ]
+  ],
+  "users" : []
 }
