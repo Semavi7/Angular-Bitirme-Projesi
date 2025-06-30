@@ -4,32 +4,14 @@ import Blank from '../../components/blank/blank';
 import { FlexiGridModule } from 'flexi-grid';
 import { RouterLink } from '@angular/router';
 import { FlexiToastService } from 'flexi-toast';
+import { FormsModule } from '@angular/forms';
+import { UserModel } from '@shared/models/user.model'
 
-export interface UserModel{
-  id?: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  userName: string;
-  email: string;
-  password: string;
-  isAdmin: boolean
-}
 
-export const initialUser: UserModel = {
-  firstName: "",
-  lastName: "",
-  userName: "",
-  email: "",
-  password: "",
-  isAdmin: false,
-  get fullName(): string {
-    return `${this.firstName} ${this.lastName}`
-  }
-}
+
 
 @Component({
-  imports: [Blank,FlexiGridModule, RouterLink],
+  imports: [Blank,FlexiGridModule, RouterLink, FormsModule],
   templateUrl: './users.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,6 +29,12 @@ export default class Users {
       this.#http.delete(`api/users/${id}`).subscribe(() => {
         this.result.reload()
       })
+    })
+  }
+
+  changeIsAdmin(data: UserModel){
+    this.#http.put(`api/users/${data.id}`, data).subscribe(() => {
+   this.result.reload()
     })
   }
 }

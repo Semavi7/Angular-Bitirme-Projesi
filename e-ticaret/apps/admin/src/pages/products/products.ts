@@ -3,28 +3,13 @@ import Blank from '../../components/blank/blank';
 import { FlexiGridFilterDataModel, FlexiGridModule } from "flexi-grid"
 import { HttpClient, httpResource } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
-import { FlexiToastService } from 'flexi-toast';
-import { CategoryModel } from '../categories/categories';
+import { FlexiToastService } from 'flexi-toast'
+import { ProductModel } from '@shared/models/product.model';
+import { CategoryModel } from '@shared/models/category.model'
 
 
-export interface ProductModel {
-  id?: string;
-  name: string;
-  imageUrl: string
-  price: number;
-  stock: number;
-  categoryId: string;
-  categoryName: string;
-}
 
-export const initialProduct: ProductModel = {
-  name: "",
-  imageUrl: "",
-  price: 0,
-  stock: 0,
-  categoryId: "123",
-  categoryName: "Telefon"
-}
+
 
 @Component({
   imports: [Blank, FlexiGridModule, RouterLink],

@@ -6,9 +6,10 @@ import Blank from 'apps/admin/src/components/blank/blank';
 import { FlexiToastService } from 'flexi-toast';
 import { NgxMaskDirective } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
-import { initialProduct, ProductModel } from '../products';
-import { CategoryModel } from '../../categories/categories';
+import { initialProduct, ProductModel } from '@shared/models/product.model';
+import { CategoryModel } from '@shared/models/category.model';
 import { FlexiSelectModule } from 'flexi-select';
+import { BreadcrumbModel } from '../../layouts/breadcrumb/breadcrumb';
 
 @Component({
   imports: [Blank, FormsModule, NgxMaskDirective, FlexiSelectModule],
@@ -18,10 +19,12 @@ import { FlexiSelectModule } from 'flexi-select';
 })
 export default class ProductCreate {
   readonly id = signal<string | undefined>(undefined)
+  readonly breadcrumbs = signal<BreadcrumbModel[]>([{ title: 'Ürünler', url: '/products', icon: 'deployed_code' }])
   readonly result = resource({
     params: () => this.id(),
     loader: async () => {
       var res = await lastValueFrom(this.#http.get<ProductModel>(`api/products/${this.id()}`))
+      this.breadcrumbs.update(prev => [...prev, { title: res.name, url: `/products/edit/${this.id()}`, icon: 'edit' }])
       return res
     }
   })
@@ -33,7 +36,7 @@ export default class ProductCreate {
   readonly categories = computed(() => this.categoryResult.value() ?? [])
   readonly categoryLoading = computed(() => this.categoryResult.isLoading())
 
-  readonly cardTitle = computed(() => this.id() ? "Ürün Güncelle" : "Ürün Ekle")
+  readonly title = computed(() => this.id() ? "Ürün Güncelle" : "Ürün Ekle")
   readonly btnName = computed(() => this.id() ? "Güncelle" : "Kaydet")
 
   readonly #http = inject(HttpClient)
@@ -45,6 +48,9 @@ export default class ProductCreate {
     this.#activate.params.subscribe(res => {
       if (res["id"]) {
         this.id.set(res["id"])
+      }
+      else {
+        this.breadcrumbs.update(prev => [...prev, { title: 'Ekle', url: '/products/create', icon: 'add' }])
       }
     })
   }
@@ -66,9 +72,9 @@ export default class ProductCreate {
     }
   }
 
-  setCategoryName(){
+  setCategoryName() {
     const id = this.data().categoryId
     const category = this.categories().find(p => p.id == id)
-    this.data.update((prev) => ({...prev, categoryName: category?.name ?? ""}))
+    this.data.update((prev) => ({ ...prev, categoryName: category?.name ?? "" }))
   }
 }                            

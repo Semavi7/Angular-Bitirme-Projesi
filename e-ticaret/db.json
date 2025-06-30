@@ -8,6 +8,15 @@
       "stock": 15,
       "categoryId": "f453",
       "categoryName": "Telefon"
+    },
+    {
+      "id": "469c",
+      "name": "Monster Notebook",
+      "imageUrl": "https://storage-monsternotebook-tr.mncdn.com/mnresize/800/-/monsternotebook-tr/UPLOAD/urun-gorselleri-yeni/TULPAR/T7_V26_1/T7-V26_2_.png",
+      "price": 63000,
+      "stock": "10",
+      "categoryId": "5767",
+      "categoryName": "Bilgisayar"
     }
   ],
   "categories": [
@@ -24,5 +33,16 @@
       "name": "Akıllı Saat"
     }
   ],
-  "users" : []
+  "users": [
+    {
+      "id": "63d7",
+      "firstName": "Mehmet",
+      "lastName": "Gürses",
+      "fullName": "Mehmet Gürses",
+      "userName": "semavi",
+      "email": "semavi1151@gmail.com",
+      "password": "123",
+      "isAdmin": true
+    }
+  ]
 }

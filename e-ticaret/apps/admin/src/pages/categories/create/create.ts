@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, resource, signal, ViewEncapsulation } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { CategoryModel, initialCategory } from '../categories';
+import { CategoryModel, initialCategory } from '@shared/models/category.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FlexiToastService } from 'flexi-toast';
 import { lastValueFrom } from 'rxjs';
+import { BreadcrumbModel } from '../../layouts/breadcrumb/breadcrumb';
 
 @Component({
   imports: [Blank, FormsModule],
@@ -15,7 +16,8 @@ import { lastValueFrom } from 'rxjs';
 })
 export default class Create {
   readonly id = signal<string | undefined>(undefined)
-  readonly cardTitle = computed(() => this.id() ? "Kategori Güncelle" : "Kategori Ekle")
+  readonly breadcrumbs = signal<BreadcrumbModel[]>([{ title: 'Kategoriler', url: '/categories', icon: 'category' }])
+  readonly title = computed(() => this.id() ? "Kategori Güncelle" : "Kategori Ekle")
   readonly btnName = computed(() => this.id() ? "Güncelle" : "Kaydet")
 
   readonly result = resource({
@@ -24,6 +26,7 @@ export default class Create {
       var res = await lastValueFrom(
         this.#http.get<CategoryModel>(`api/categories/${this.id()}`)
       )
+      this.breadcrumbs.update(prev => [...prev, { title: res.name, url: `/categories/edit/${this.id()}`, icon: 'edit' }])
       return res
     }
   })
@@ -38,6 +41,9 @@ export default class Create {
     this.#activated.params.subscribe((res) => {
       if (res["id"]) {
         this.id.set(res["id"])
+      }
+      else {
+        this.breadcrumbs.update(prev => [...prev, { title: 'Ekle', url: '/categories/create', icon: 'add' }])
       }
     })
   }

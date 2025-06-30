@@ -4,15 +4,9 @@ import Blank from '../../components/blank/blank';
 import { FlexiGridModule } from 'flexi-grid';
 import { RouterLink } from '@angular/router';
 import { FlexiToastService } from 'flexi-toast';
+import { CategoryModel } from '@shared/models/category.model'
 
-export interface CategoryModel {
-  id?: string,
-  name: string
-}
 
-export const initialCategory: CategoryModel = {
-  name: ""
-}
 
 @Component({
   imports: [Blank, FlexiGridModule, RouterLink],
