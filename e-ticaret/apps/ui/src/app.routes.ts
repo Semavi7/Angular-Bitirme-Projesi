@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { authGuard } from './guards/auth-guard';
 
 export const appRoutes: Route[] = [
     {
@@ -10,9 +11,28 @@ export const appRoutes: Route[] = [
                 loadComponent: () => import ("./pages/home/home")
             },
             {
-                path: ":categoryKey",
+                path: "products/:categoryUrl",
                 loadComponent: () => import ("./pages/home/home")
             },
+            {
+                path: "auth",
+                loadChildren: () => import("./pages/auth/routers")
+            },
+            {
+                path: "baskets",
+                loadComponent: () => import("./pages/baskets/baskets"),
+                canActivate: [authGuard]
+            },
+            {
+                path: "payment",
+                loadComponent: () => import("./pages/payment/payment"),
+                canActivate: [authGuard]
+            },
+            {
+                path: 'orders',
+                loadComponent: () => import('./pages/orders/orders'),
+                canActivate: [authGuard]
+            }
         ]
     }
 ];

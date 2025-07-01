@@ -1,7 +1,8 @@
 import { httpResource } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, computed, ViewEncapsulation } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { AfterViewInit, ChangeDetectionStrategy, Component, computed, inject, ViewEncapsulation } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CategoryModel } from '@shared/models/category.model';
+import { Common } from '../../services/common';
 
 @Component({
   imports: [RouterOutlet, RouterLink],
@@ -9,7 +10,24 @@ import { CategoryModel } from '@shared/models/category.model';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class Layout {
+export default class Layout implements AfterViewInit {
+
   readonly result = httpResource<CategoryModel[]>(() => "api/categories")
   readonly data = computed(() => this.result.value() ?? [])
+  readonly user = computed(() => this.#common.user())
+  readonly basketCount = computed(() => this.#common.basketCount())
+
+  readonly #router = inject(Router)
+  readonly #common = inject(Common)
+
+  ngAfterViewInit(): void {
+    this.#common.getBasketCount()
+  }
+
+  loguot() {
+    localStorage.clear()
+    this.#common.user.set(undefined)
+    this.#common.basketCount.set(0)
+    this.#router.navigateByUrl("/auth/login")
+  }
 }

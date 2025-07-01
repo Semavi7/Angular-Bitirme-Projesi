@@ -7,7 +7,8 @@
       "price": 100000,
       "stock": 15,
       "categoryId": "f453",
-      "categoryName": "Telefon"
+      "categoryName": "Telefon",
+      "categoryUrl": "telefon"
     },
     {
       "id": "469c",
@@ -16,21 +17,25 @@
       "price": 63000,
       "stock": "10",
       "categoryId": "5767",
-      "categoryName": "Bilgisayar"
+      "categoryName": "Bilgisayar",
+      "categoryUrl": "bilgisayar"
     }
   ],
   "categories": [
     {
       "id": "f453",
-      "name": "Telefon"
+      "name": "Telefon",
+      "url": "telefon"
     },
     {
       "id": "5767",
-      "name": "Bilgisayar"
+      "name": "Bilgisayar",
+      "url": "bilgisayar"
     },
     {
       "id": "6d7a",
-      "name": "Akıllı Saat"
+      "name": "Akıllı Saat",
+      "url": "akıllı_saat"
     }
   ],
   "users": [
@@ -43,6 +48,56 @@
       "email": "semavi1151@gmail.com",
       "password": "123",
       "isAdmin": true
+    },
+    {
+      "id": "931b",
+      "firstName": "Derya",
+      "lastName": "Gürses",
+      "fullName": "Derya Gürses",
+      "userName": "derya",
+      "email": "derya@gmail.com",
+      "password": "123",
+      "isAdmin": false
+    }
+  ],
+  "baskets": [],
+  "orders": [
+    {
+      "id": "f77e",
+      "userId": "931b",
+      "orderNumber": "TS-2025-1751332179844",
+      "date": "2025-07-01T01:09:39.844Z",
+      "fullName": "Mehmet Burçhan Gürses",
+      "phoneNumber": "5364364898",
+      "city": "Ankara",
+      "district": "ALTINDAĞ",
+      "fullAddress": "Maltepe",
+      "cartNumber": "1111111111111111",
+      "cartOwnerName": "Burçhan Gürses",
+      "expiresDate": "02/11",
+      "cvv": "400",
+      "installmentOptions": "6 Taksit",
+      "status": "Hazırlanıyor",
+      "baskets": [
+        {
+          "id": "6913",
+          "userId": "931b",
+          "productId": "469c",
+          "productName": "Monster Notebook",
+          "productImageUrl": "https://storage-monsternotebook-tr.mncdn.com/mnresize/800/-/monsternotebook-tr/UPLOAD/urun-gorselleri-yeni/TULPAR/T7_V26_1/T7-V26_2_.png",
+          "productPrice": 63000,
+          "quantity": 1
+        },
+        {
+          "id": "d518",
+          "userId": "931b",
+          "productId": "123",
+          "productName": "Iphone 15 Pro 2",
+          "productImageUrl": "https://ffo3gv1cf3ir.merlincdn.net//SiteAssets/pasaj/crop/cg/1698313241770/1698313246580/1698313246580_600x450.png?1749680495000",
+          "productPrice": 100000,
+          "quantity": 1
+        }
+      ]
     }
   ]
 }

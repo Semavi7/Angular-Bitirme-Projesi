@@ -15,6 +15,7 @@ exportExcelFileName="kategoriler"
     </ng-template>
 
     <flexi-grid-column field="name" title="Kategori adı"/>
+    <flexi-grid-column field="url" title="Kategori url"/>
 
     <ng-template flexiGridColumnCommandTemplate let-item>
         <flexi-button routerLink="/categories/edit/{{item.id}}" btnIcon="edit" btnColor="info" title="Güncelle" flexiTooltip/>
